@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>库洛米</title>
+    <title>Kuromi</title>
     <style>
         * {
             margin: 0;
@@ -14,108 +14,98 @@
         body {
             width: 100vw;
             height: 100vh;
-            background: #2d1b44;
+            background: #2c1b42;
             overflow: hidden;
             position: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* 漂浮文字样式 */
-        .float-text {
+        .float-word {
             position: absolute;
-            font-size: 22px;
+            color: #e8c8ff;
+            font-size: 26px;
             font-weight: bold;
-            color: #f3d4ff;
+            white-space: nowrap;
             pointer-events: none;
-            animation: float 10s linear infinite;
-            opacity: 0.3;
+            animation: upFloat 12s linear infinite;
+            opacity: 0.35;
         }
 
-        @keyframes float {
+        @keyframes upFloat {
             0% {
-                transform: translateY(100vh) rotate(0deg);
+                bottom: -50px;
+                transform: translateX(0) rotate(0deg);
                 opacity: 0;
             }
-            15% {
-                opacity: 0.3;
-            }
-            85% {
-                opacity: 0.3;
+            20% {
+                opacity: 0.4;
             }
             100% {
-                transform: translateY(-200px) rotate(360deg);
+                bottom: 100vh;
+                transform: translateX(60px) rotate(360deg);
                 opacity: 0;
             }
         }
 
-        /* 中间大库洛米 */
-        .main-box {
-            z-index: 99;
-            text-align: center;
-        }
-
-        .main-kuromi {
-            width: 240px;
-            border-radius: 20px;
-        }
-
-        .title {
+        /* 中间标题文字 */
+        .center-title {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
             color: #f3d4ff;
-            font-size: 24px;
-            margin-top: 15px;
+            font-weight: bold;
+            letter-spacing: 6px;
         }
     </style>
 </head>
-
 <body>
 
-    <div class="main-box">
-        <img class="main-kuromi" src="https://img0.baidu.com/it/u=3802583223,1593772393&fm=253&fmt=auto" alt="库洛米">
-        <h2 class="title">💜 库洛米 💜</h2>
-    </div>
+<!-- 中间纯文字，无任何图片 -->
+<div class="center-title">
+    库洛米 Kuromi
+</div>
 
-    <script>
-        // 漂浮的文字内容（可自己改）
-        const texts = ["库洛米", "可爱", "💜", "kuromi", "不许走", "喜欢你"];
+<script>
+// 漂浮文字列表
+const wordList = ["Kuromi", "库洛米"];
 
-        function createFloat() {
-            let text = document.createElement("div");
-            text.className = "float-text";
-            // 随机选一句文字
-            text.innerText = texts[Math.floor(Math.random() * texts.length)];
-            text.style.left = Math.random() * 100 + "vw";
-            text.style.animationDuration = 8 + Math.random() * 6 + "s";
-            document.body.appendChild(text);
-            setTimeout(() => text.remove(), 15000);
-        }
+// 创建漂浮文字
+function createText(){
+    let textDom = document.createElement("div");
+    textDom.className = "float-word";
+    let randomText = wordList[Math.floor(Math.random() * wordList.length)];
+    textDom.innerText = randomText;
 
-        // 自动生成漂浮文字
-        setInterval(createFloat, 600);
-        for (let i = 0; i < 15; i++) createFloat();
+    textDom.style.left = Math.random() * 90 + "vw";
+    textDom.style.animationDuration = 10 + Math.random() * 8 + "s";
 
-        // 必须点 10 次才能退出
-        let count = 0;
-        const max = 10;
+    document.body.appendChild(textDom);
+    setTimeout(()=>{
+        textDom.remove();
+    },18000);
+}
 
-        window.onbeforeunload = function (e) {
-            count++;
-            if (count < max) {
-                return "不许退出哦～";
-            }
-        };
+setInterval(createText,700);
+for(let i = 0; i < 20; i++){
+    createText();
+}
 
-        window.addEventListener("popstate", function () {
-            count++;
-            if (count < max) {
-                alert("不许随便关掉我😈 还需要点 " + (max - count) + " 次！");
-                history.pushState({}, null, location.href);
-            }
-        });
+// 10次返回才能退出
+let exitNum = 0;
+const needExit = 10;
+history.pushState({},'',location.href);
 
-        history.pushState({}, null, location.href);
-    </script>
+window.addEventListener("popstate",function(){
+    exitNum++;
+    if(exitNum < needExit){
+        alert(`😈 不能走！还要点击退出 ${needExit - exitNum} 次`);
+        history.pushState({},'',location.href);
+    }
+})
+</script>
 
 </body>
 </html>
