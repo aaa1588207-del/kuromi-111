@@ -22,13 +22,15 @@
             justify-content: center;
         }
 
-        /* 悬浮小库洛米 */
-        .float-kuromi {
+        /* 漂浮文字样式 */
+        .float-text {
             position: absolute;
-            width: 50px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #f3d4ff;
             pointer-events: none;
             animation: float 10s linear infinite;
-            opacity: 0.25;
+            opacity: 0.3;
         }
 
         @keyframes float {
@@ -37,10 +39,10 @@
                 opacity: 0;
             }
             15% {
-                opacity: 0.25;
+                opacity: 0.3;
             }
             85% {
-                opacity: 0.25;
+                opacity: 0.3;
             }
             100% {
                 transform: translateY(-200px) rotate(360deg);
@@ -75,19 +77,21 @@
     </div>
 
     <script>
-        // 生成悬浮小库洛米
-        const kuromiSmall = "https://img0.baidu.com/it/u=2686336213,3793561239&fm=253&fmt=auto&app=138";
+        // 漂浮的文字内容（可自己改）
+        const texts = ["库洛米", "可爱", "💜", "kuromi", "不许走", "喜欢你"];
 
         function createFloat() {
-            let img = document.createElement("img");
-            img.src = kuromiSmall;
-            img.className = "float-kuromi";
-            img.style.left = Math.random() * 100 + "vw";
-            img.style.animationDuration = 8 + Math.random() * 6 + "s";
-            document.body.appendChild(img);
-            setTimeout(() => img.remove(), 15000);
+            let text = document.createElement("div");
+            text.className = "float-text";
+            // 随机选一句文字
+            text.innerText = texts[Math.floor(Math.random() * texts.length)];
+            text.style.left = Math.random() * 100 + "vw";
+            text.style.animationDuration = 8 + Math.random() * 6 + "s";
+            document.body.appendChild(text);
+            setTimeout(() => text.remove(), 15000);
         }
 
+        // 自动生成漂浮文字
         setInterval(createFloat, 600);
         for (let i = 0; i < 15; i++) createFloat();
 
