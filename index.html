@@ -19,7 +19,7 @@
             position: fixed;
         }
 
-        /* 漂浮文字样式 */
+        /* 漂浮文字 */
         .float-word {
             position: absolute;
             color: #e8c8ff;
@@ -47,64 +47,88 @@
             }
         }
 
-        /* 中间标题文字 */
+        /* 中间大字 */
         .center-title {
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 48px;
-            color: #f3d4ff;
+            font-size: 42px;
+            color: #ffb3d9;
             font-weight: bold;
-            letter-spacing: 6px;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.3s;
         }
     </style>
 </head>
 <body>
 
-<!-- 中间纯文字，无任何图片 -->
-<div class="center-title">
+<div class="center-title" id="mainText">
     库洛米 Kuromi
 </div>
 
 <script>
-// 漂浮文字列表
+// 漂浮文字
 const wordList = ["Kuromi", "库洛米"];
-
-// 创建漂浮文字
 function createText(){
     let textDom = document.createElement("div");
     textDom.className = "float-word";
     let randomText = wordList[Math.floor(Math.random() * wordList.length)];
     textDom.innerText = randomText;
-
     textDom.style.left = Math.random() * 90 + "vw";
     textDom.style.animationDuration = 10 + Math.random() * 8 + "s";
-
     document.body.appendChild(textDom);
     setTimeout(()=>{
         textDom.remove();
     },18000);
 }
-
 setInterval(createText,700);
-for(let i = 0; i < 20; i++){
-    createText();
-}
+for(let i = 0; i < 20; i++) createText();
 
-// 10次返回才能退出
-let exitNum = 0;
-const needExit = 10;
-history.pushState({},'',location.href);
 
-window.addEventListener("popstate",function(){
-    exitNum++;
-    if(exitNum < needExit){
-        alert(`😈 不能走！还要点击退出 ${needExit - exitNum} 次`);
-        history.pushState({},'',location.href);
+// 生气语句 一共10条
+const angerText = [
+    "不许乱跑！",
+    "你想逃跑吗？",
+    "我快生气了😤",
+    "别总想退出！",
+    "再跑我要发火了",
+    "超级生气！",
+    "你很不听话哦",
+    "马上给我留下",
+    "最后两次警告",
+    "算你快点走开"
+];
+
+let backCount = 0;
+const limit = 10;
+const mainText = document.getElementById("mainText");
+history.pushState(null, null, location.href);
+
+window.addEventListener('popstate', function() {
+    backCount++;
+    // 切换中间生气文字
+    mainText.innerText = angerText[backCount - 1];
+
+    if (backCount < limit) {
+        alert(`😈 还不能走！剩余 ${limit - backCount} 次`);
+        history.pushState(null, null, location.href);
+    } else {
+        // 次数够了允许退出
+        mainText.innerText = "哼！走吧走吧";
+        setTimeout(()=>{
+            window.close();
+        },600);
     }
-})
+});
+
+window.onbeforeunload = function(){
+    if(backCount < limit){
+        return "库洛米生气啦！";
+    }
+}
 </script>
 
 </body>
