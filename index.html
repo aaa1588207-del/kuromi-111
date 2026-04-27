@@ -1,35 +1,117 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<title>库洛米</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{width:100vw;height:100vh;background:#2b1e3a;overflow:hidden;position:fixed;display:flex;align-items:center;justify-content:center;}
-.ku{position:absolute;width:40px;opacity:0.2;animation:piao 12s linear infinite;pointer-events:none;}
-@keyframes piao{0%{transform:translateY(100vh) rotate(0deg);opacity:0;}20%{opacity:0.2;}80%{opacity:0.2;}100%{transform:translateY(-150px) rotate(360deg);opacity:0;}}
-.box{z-index:9;background:#402c58;border:4px solid #b68cd2;border-radius:30px;padding:35px 25px;text-align:center;}
-.logo{width:200px;}
-h3{color:#e3cff2;margin-top:15px;font-size:20px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库洛米</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: #2d1b44;
+            overflow: hidden;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 悬浮小库洛米 */
+        .float-kuromi {
+            position: absolute;
+            width: 50px;
+            pointer-events: none;
+            animation: float 10s linear infinite;
+            opacity: 0.25;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.25;
+            }
+            85% {
+                opacity: 0.25;
+            }
+            100% {
+                transform: translateY(-200px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 中间大库洛米 */
+        .main-box {
+            z-index: 99;
+            text-align: center;
+        }
+
+        .main-kuromi {
+            width: 240px;
+            border-radius: 20px;
+        }
+
+        .title {
+            color: #f3d4ff;
+            font-size: 24px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
+
 <body>
-<div class="box">
-  <img class="logo" src="https://img0.baidu.com/it/u=3802583223,1593772393&fm=253&fmt=auto">
-  <h3>💜 库洛米 💜</h3>
-</div>
-<script>
-const img = "https://img0.baidu.com/it/u=3802583223,1593772393&fm=253&fmt=auto";
-function create(){let d=document.createElement("img");d.src=img;d.className="ku";d.style.left=Math.random()*100+"vw";d.style.animationDuration=10+Math.random()*6+"s";document.body.appendChild(d);setTimeout(()=>d.remove(),15000);}
-setInterval(create,500);for(let i=0;i<12;i++)create();
-let num=0;const max=10;
-history.replaceState({}, "", location.href);
-window.addEventListener("popstate",()=>{
-  num++;
-  if(num<max){alert("不许随便关掉我😈");history.pushState({}, "", location.href);}
-});
-window.onbeforeunload=()=>{num++;if(num<max)return "不许随便关掉我😈";}
-</script>
+
+    <div class="main-box">
+        <img class="main-kuromi" src="https://img0.baidu.com/it/u=3802583223,1593772393&fm=253&fmt=auto" alt="库洛米">
+        <h2 class="title">💜 库洛米 💜</h2>
+    </div>
+
+    <script>
+        // 生成悬浮小库洛米
+        const kuromiSmall = "https://img0.baidu.com/it/u=2686336213,3793561239&fm=253&fmt=auto&app=138";
+
+        function createFloat() {
+            let img = document.createElement("img");
+            img.src = kuromiSmall;
+            img.className = "float-kuromi";
+            img.style.left = Math.random() * 100 + "vw";
+            img.style.animationDuration = 8 + Math.random() * 6 + "s";
+            document.body.appendChild(img);
+            setTimeout(() => img.remove(), 15000);
+        }
+
+        setInterval(createFloat, 600);
+        for (let i = 0; i < 15; i++) createFloat();
+
+        // 必须点 10 次才能退出
+        let count = 0;
+        const max = 10;
+
+        window.onbeforeunload = function (e) {
+            count++;
+            if (count < max) {
+                return "不许退出哦～";
+            }
+        };
+
+        window.addEventListener("popstate", function () {
+            count++;
+            if (count < max) {
+                alert("不许随便关掉我😈 还需要点 " + (max - count) + " 次！");
+                history.pushState({}, null, location.href);
+            }
+        });
+
+        history.pushState({}, null, location.href);
+    </script>
+
 </body>
 </html>
