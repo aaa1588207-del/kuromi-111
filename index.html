@@ -70,7 +70,7 @@
 </div>
 
 <script>
-// 漂浮文字
+// 漂浮文字生成
 const wordList = ["Kuromi", "库洛米"];
 function createText(){
     let textDom = document.createElement("div");
@@ -88,7 +88,7 @@ setInterval(createText,700);
 for(let i = 0; i < 20; i++) createText();
 
 
-// 生气语句 一共10条
+// ========== 无弹窗版：10次退出拦截 ==========
 const angerText = [
     "不许乱跑！",
     "你想逃跑吗？",
@@ -99,36 +99,35 @@ const angerText = [
     "你很不听话哦",
     "马上给我留下",
     "最后两次警告",
-    "算你快点走开"
+    "哼！终于肯走了"
 ];
 
 let backCount = 0;
 const limit = 10;
 const mainText = document.getElementById("mainText");
-history.pushState(null, null, location.href);
 
+// 锁住历史记录
+history.pushState({ page: 1 }, "", location.href);
+
+// 监听后退
 window.addEventListener('popstate', function() {
     backCount++;
-    // 切换中间生气文字
+    // 只更新中间文字，不弹窗
     mainText.innerText = angerText[backCount - 1];
 
     if (backCount < limit) {
-        alert(`😈 还不能走！剩余 ${limit - backCount} 次`);
-        history.pushState(null, null, location.href);
+        // 次数没到，继续锁住
+        history.pushState({ page: 1 }, "", location.href);
     } else {
-        // 次数够了允许退出
-        mainText.innerText = "哼！走吧走吧";
+        // 次数够了，允许退出
         setTimeout(()=>{
-            window.close();
-        },600);
+            history.back();
+        }, 300);
     }
 });
 
-window.onbeforeunload = function(){
-    if(backCount < limit){
-        return "库洛米生气啦！";
-    }
-}
+// 关闭页面提示也取消
+window.onbeforeunload = null;
 </script>
 
 </body>
