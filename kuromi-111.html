@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>库洛米</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:100vw;height:100vh;background:#2b1e3a;overflow:hidden;position:fixed;display:flex;align-items:center;justify-content:center;}
+.ku{position:absolute;width:40px;opacity:0.2;animation:piao 12s linear infinite;pointer-events:none;}
+@keyframes piao{0%{transform:translateY(100vh) rotate(0deg);opacity:0;}20%{opacity:0.2;}80%{opacity:0.2;}100%{transform:translateY(-150px) rotate(360deg);opacity:0;}}
+.box{z-index:9;background:#402c58;border:4px solid #b68cd2;border-radius:30px;padding:35px 25px;text-align:center;}
+.logo{width:200px;}
+h3{color:#e3cff2;margin-top:15px;font-size:20px}
+</style>
+</head>
+<body>
+<div class="box">
+  <img class="logo" src="https://img0.baidu.com/it/u=3802583223,1593772393&fm=253&fmt=auto">
+  <h3>💜 库洛米 💜</h3>
+</div>
+<script>
+const img = "https://img0.baidu.com/it/u=3802583223,1593772393&fm=253&fmt=auto";
+function create(){let d=document.createElement("img");d.src=img;d.className="ku";d.style.left=Math.random()*100+"vw";d.style.animationDuration=10+Math.random()*6+"s";document.body.appendChild(d);setTimeout(()=>d.remove(),15000);}
+setInterval(create,500);for(let i=0;i<12;i++)create();
+let num=0;const max=10;
+history.replaceState({}, "", location.href);
+window.addEventListener("popstate",()=>{
+  num++;
+  if(num<max){alert("不许随便关掉我😈");history.pushState({}, "", location.href);}
+});
+window.onbeforeunload=()=>{num++;if(num<max)return "不许随便关掉我😈";}
+</script>
+</body>
+</html>
